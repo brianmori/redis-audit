@@ -1,0 +1,62 @@
+[project]
+name = "redis-audit"
+version = "0.1.0"
+description = "Reusable Redis estate auditing library and CLI"
+readme = "README.md"
+requires-python = ">=3.14"
+license = "Apache-2.0"
+authors = [
+    { name = "brianmori", email = "52781411+brianmori@users.noreply.github.com" }
+]
+dependencies = [
+  "redis>=8.1,<9",
+]
+
+[project.scripts]
+redis-audit = "redis_audit:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13"]
+build-backend = "uv_build"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=9.1.1,<10",
+  "pytest-cov>=7.1.0,<8",
+  "pytest-dotenv>=0.5.0,<1.0.0",
+  "ruff>=0.15,<1",
+  "mypy>=2.3.1,<3",
+]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+
+
+
+
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = ["integration: requires the Docker Redis integration lab"]
+
+
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "B"]
+
+[tool.mypy]
+python_version = "3.14"
+disallow_untyped_defs = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+packages = ["redis_audit"]
+mypy_path = "src"
+
+[tool.uv.workspace]
+members = [
+    "redis-audit",
+]
+
