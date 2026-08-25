@@ -75,7 +75,15 @@ select = [
     "RUF", # ruff-specific rules
     "PL", # pylint
     "TID", # flake8-tidy-imports
-    "D", # pydocstyle — incrementally enforced for topology/parser.py and topology/models.py
+    "D", # pydocstyle
+]
+
+ignore = [
+    "D100", # Missing docstring in public module
+    "D104", # Missing docstring in public package (__init__.py)
+    "D107", # Missing docstring in __init__
+    "D203", # 1 blank line required before class docstring (conflicts with D211)
+    "D213", # Multi-line docstring summary should start at the second line (conflicts with D212)
 ]
 
 [tool.ruff.format]
@@ -97,7 +105,10 @@ max-args = 8
 ban-relative-imports = "all"
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*" = ["PLR2004"]
+"tests/**/*.py" = [
+    "D",        # Ignore docstring requirements in tests
+    "PLR2004",  # Allow magic values in assertions (e.g., assert result == 42)
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
