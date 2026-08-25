@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  # PRs get their own group (by PR number); pushes share their branch group.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Set up Python 3.12
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: uv sync --locked --group dev
+
+      - name: Lint and Format Check
+        run: |
+          uv run ruff check --output-format github src/ tests/
+          uv run ruff format --check src/ tests/
+
+      - name: Type Check
+        run: uv run mypy
+
+  tests:
+    name: Tests ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.12", "3.13", "3.14" ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv sync --locked --group dev
+
+      - name: Run Tests
+        run: uv run pytest -m "unit or integration" --cov --cov-report=xml -v
+
+#  live-tests:
+#    name: Redis live tests
+#    runs-on: ubuntu-latest
+#    timeout-minutes: 15
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v6
+#
+#      - name: Install uv
+#        uses: astral-sh/setup-uv@v7
+#        with:
+#          enable-cache: true
+#
+#      - name: Install just
+#        uses: extractions/setup-just@v4
+#        with:
+#          just-version: "1.46.0"
+#
+#      - name: Set up Python 3.12
+#        run: uv python install 3.12
+#
+#      - name: Install dependencies
+#        run: uv sync --locked --group dev
+#
+#      - name: Run live tests
+#        run: just test-live
+
+  package:
+    name: Build package
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Build package
+        run: uv build
