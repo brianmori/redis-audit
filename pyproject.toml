@@ -45,7 +45,7 @@ Issues = "https://github.com/brianmori/redis-audit/issues"
 requires = ["uv_build>=0.12.5,<0.13"]
 build-backend = "uv_build"
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=9.1.1,<10",
     "pytest-cov>=7.1.0,<8",

@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-slim
     permissions:
       pull-requests: read
+      statuses: write
     steps:
       - uses: amannn/action-semantic-pull-request@v6
         with:
@@ -28,4 +29,3 @@ jobs:
           wip: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

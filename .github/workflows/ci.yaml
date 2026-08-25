@@ -70,7 +70,7 @@ jobs:
         run: uv run pytest -m "unit or integration" --cov --cov-report=xml -v
 
   live-tests:
-    name: RabbitMQ live tests
+    name: Redis live tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
