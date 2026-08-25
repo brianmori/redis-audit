@@ -120,14 +120,3 @@ plugins = ["pydantic.mypy"]
 [[tool.mypy.overrides]]
 module = "conftest"
 ignore_missing_imports = true
-
-[tool.mypy]
-python_version = "3.12"
-strict = true
-files = ["src", "tests"]
-warn_unused_configs = true
-plugins = ["pydantic.mypy"]
-
-[[tool.mypy.overrides]]
-module = "conftest"
-ignore_missing_imports = true
