@@ -8,12 +8,6 @@ authors = [
     { name = "brianmori", email = "52781411+brianmori@users.noreply.github.com" }
 ]
 
-[project.urls]
-Homepage = "https://github.com/brianmori/redis-audit"
-Documentation = "https://github.com/brianmori/redis-audit"
-Repository = "https://github.com/brianmori/redis-audit"
-Issues = "https://github.com/brianmori/redis-audit/issues"
-
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
@@ -33,6 +27,12 @@ keywords = [
     "redis sentinel",
     "redis migration",
 ]
+
+[project.urls]
+Homepage = "https://github.com/brianmori/redis-audit"
+Documentation = "https://github.com/brianmori/redis-audit"
+Repository = "https://github.com/brianmori/redis-audit"
+Issues = "https://github.com/brianmori/redis-audit/issues"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13"]
